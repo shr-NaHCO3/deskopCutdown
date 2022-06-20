@@ -29,4 +29,21 @@ window.addEventListener('DOMContentLoaded', function(){
     //         ipcr.send('up');
     //     }
     // }, 1200*1000)
+
+    let gw = this.document.querySelector('#githubW')
+    if(gw){
+        gw.addEventListener('click', ()=>{
+            this.window.open('https://github.com/shr-NaHCO3/deskopCutdown')
+        })
+    }
+
+    let ew = this.document.querySelector('#electronW')
+    if(ew){
+        ew.addEventListener('click', ()=>{
+            this.window.open('https://electronjs.org')
+        })
+    }
+
+    
+
 })

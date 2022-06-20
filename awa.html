@@ -23,8 +23,8 @@
         <p>倒计时小插件 v3.0.0
         <p>设置某些重大事件的名称（点击标题即可编辑）</p>
         <p>设置倒计时并以0.1分钟的精度进行倒计时</p>
-        <p>使用<a href="https://electronjs.org">electron</a>构建</p>
-        <p>代码开源：</p>
+        <p>使用<a id="electronW" href="./awa.html">electron</a>构建</p>
+        <p>代码开源：<a id="githubW" href="./awa.html">github.com/shr-NaHCO3/deskopCutdown</a></p>
         <button onclick="quit()">关闭</button>
     </div>
     <div id="backg"></div>
@@ -118,6 +118,13 @@
                 awa.push(' ')
             }
             return awa.join('')
+        }
+
+
+
+
+        if(new Date() < new Date('7 1 2022')){
+            document.querySelector('.aboutbtn').style['display'] = "none"
         }
     </script>
 </body>
