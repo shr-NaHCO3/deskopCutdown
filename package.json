@@ -1,0 +1,31 @@
+{
+  "name": "dist",
+  "version": "1.0.0",
+  "description": "awa",
+  "main": "main.js",
+  "author": "shr-nahco3",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^8.2.1",
+    "electron-builder": "^22.4.1"
+  },
+  "dependencies": {
+  },
+  "build": {
+    "productName": "倒计时",
+    "appId": "com.xxx.app",
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    }
+  },
+  "scripts": {
+    "start": "electron .",
+    "dist1": "electron-builder --win --x64"
+  },
+  "electronDownload": {
+    "mirror": "https://npm.taobao.org/mirrors/electron/"
+  }
+}

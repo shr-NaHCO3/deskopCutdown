@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>考试倒计时</title>
+</head>
+<body>
+    <p class="title">距离<awa contenteditable='true' class="eventname"></awa>还有<button id="down" class="awawa">&nbsp;↓&nbsp;</button><button id="close" class="awawa">&nbsp;×&nbsp;</button></p>
+    <div class="timeLeft"><p class="day lt">00</p>天<p class="hour lt">00</p>时<p class="minute lt">00.0</p>分</div>
+    <div class="sbs">
+        <button class="settingbtn sb" onclick="settings()"><p class="sbp">设置…</p></button>
+        <button class="aboutbtn sb" onclick="about()"><p class="sbp">关于…</p></button>
+    </div>
+    <div class="settings" style="display: none;">
+        <p>年：<select id="yearT"></select></p>
+        <p>月：<select id="monthT"></select></p>
+        <p>日：<select id="dayT"></select></p>
+        <button onclick="accept()">确定</button><button onclick="quit()">取消</button>
+    </div>
+    <div class="about" style="display: none;">
+        <p>倒计时小插件 v3.0.0
+        <p>设置某些重大事件的名称（点击标题即可编辑）</p>
+        <p>设置倒计时并以0.1分钟的精度进行倒计时</p>
+        <p>使用<a href="https://electronjs.org">electron</a>构建</p>
+        <p>代码开源：</p>
+        <button onclick="quit()">关闭</button>
+    </div>
+    <div id="backg"></div>
+    <script>
+        let tips = [
+            '不积硅步无以至千里，不积小流无以成江海。',
+            '信心来自于实力，实力来自于勤奋',
+            '天道酬勤',
+            '点击以设置',
+            '中考加油！',
+            'keep moving'
+        ]
+
+
+        setInterval(()=>{
+            let year = window.localStorage.getItem('year');
+            let month = window.localStorage.getItem('month');
+            let day = window.localStorage.getItem('day');
+
+
+            let tt = new Date(`${month} ${day} ${year}`)
+            let dn = new Date()
+            let lms = tt-dn
+            for(let i of document.getElementsByClassName("day")) {
+                i.innerText = Math.floor(lms/1000/3600/24);
+            }
+            for(let i of document.getElementsByClassName("hour")) {
+                i.innerText = Math.floor(lms%(3600*24*1000)/1000/3600);
+            }
+            for(let i of document.getElementsByClassName("minute")) {
+                i.innerText = Math.floor((lms%(3600*24*1000)/1000%3600/60)*10)/10;
+            }
+
+            if(localStorage.getItem('name') == undefined){
+                localStorage.setItem('name', '地生中考')
+            }
+
+            if(document.querySelector('.eventname').innerText == ''){
+                document.querySelector('.eventname').innerText = addSpace(localStorage.getItem('name'))
+            }else if(document.querySelector('.eventname').innerText != '' && document.querySelector('.eventname').innerText != localStorage.getItem('name')){
+                localStorage.setItem('name', document.querySelector('.eventname').innerText)
+            }
+        },2000);
+
+        // setInterval(() => {
+        //     document.querySelector('.sbp').innerText = tips[Math.floor(Math.random()*tips.length)]
+        // }, 8000);
+
+        function settings(){
+            quit()
+            document.querySelector('.settings').style['display'] = "block"
+            for(let i=2022; i<=2077; i++){
+                document.querySelector('#yearT').innerHTML+=`<option value="${i}">${i} 年</option>`
+            }
+            for(let i=1; i<=12; i++){
+                document.querySelector('#monthT').innerHTML+=`<option value="${i}">${i} 月</option>`
+            }
+            for(let i=1; i<=31; i++){
+                document.querySelector('#dayT').innerHTML+=`<option value="${i}">${i} 日</option>`
+            }
+        }
+
+        function about(){
+            quit()
+            document.querySelector('.about').style['display'] = "flex"
+        }
+
+        function accept(){
+            window.localStorage.setItem('year', document.querySelector('#yearT').value);
+            window.localStorage.setItem('month', document.querySelector('#monthT').value);
+            window.localStorage.setItem('day', document.querySelector('#dayT').value);
+            quit()
+        }
+
+        function quit(){
+            document.querySelector('.settings').style['display'] = "none"
+            document.querySelector('.about').style['display'] = "none"
+            document.querySelector('#yearT').innerHTML=''
+            document.querySelector('#monthT').innerHTML=''
+            document.querySelector('#dayT').innerHTML=''
+        }
+
+
+
+        function addSpace(string){
+            let awa = string.split('')
+            if(awa[0] != ' '){
+                awa.unshift(' ')
+            }
+            if(awa[-1] != ' '){
+                awa.push(' ')
+            }
+            return awa.join('')
+        }
+    </script>
+</body>
+<style>
+    @keyframes tip {
+        0%{
+            opacity: 0;
+            max-width: 0px;
+        }
+        50%{
+            opacity: 1;
+            max-width: 1000px;
+        }
+        100%{
+            opacity:0;
+            max-width: 0px;
+        }
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background-color: #e0e0e000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .title {
+        font-size: 30px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        align-content: center;
+        flex-direction: row;
+    }
+
+    .timeLeft {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        font-size: 32px;
+        font-family: "Lucida Console";
+        font-weight: bold;
+        -webkit-app-region: drag;
+        -webkit-user-select: none;
+    }
+
+    .timeLeft .lt{
+        font-size: 72px;
+        font-weight: bold;
+        color: #eb1e0f;
+    }
+
+
+    .sb {
+        border: 0;
+        border-radius: 3px;
+    }
+    .sb:hover{
+        box-shadow: 3px 3px 3px #afafaf;
+    }
+    .sbp{
+        margin: 5px;
+        font-size: 20px;
+        /* animation-name: tip;
+        animation-duration: 8s;
+        animation-iteration-count: infinite;
+        animation-timing-function: cubic-bezier(0.62, 0.01, 0.37, 1.04); */
+
+        white-space:nowrap;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .settings {
+        border-radius: 5px;
+        padding: 20px;
+        background-color: #d3d3d3;
+    }
+
+    .awawa{
+        background-color: #e0e0e000;
+        border-radius: 0px;
+        border: 1px solid #252525;
+        height: 25px;
+        margin: 2px;
+        padding: 4px 5px;
+    }
+    .awawa:hover{
+        background-color: #636363;
+    }
+
+    #backg{
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        background-color: #ffffff;
+        filter: blur(10px);
+        z-index: -114514;
+        opacity: 0.65;
+        border-radius: 4px;
+    }
+
+    .about {
+        height: 132px;
+        background-color: #d3d3d3;
+        border-radius: 5px;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+</html>
